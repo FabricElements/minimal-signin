@@ -1,0 +1,336 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../gold-email-input/gold-email-input.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="../paper-styles/classes/typography.html">
+<link rel="import" href="sign-icons.html">
+
+<!--
+`minimal-signin`
+App Sign in module
+
+@demo demo/index.html
+-->
+
+<dom-module id="minimal-signin">
+  <template>
+    <style is="custom-style">
+      :host {
+        display: block;
+        overflow-y: auto;
+        margin: 0 1rem;
+        padding: 1rem 0;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      paper-button {
+        margin: 0 0 1rem 0;
+      }
+
+      paper-button:not([disabled]) {
+        color: white;
+      }
+
+      paper-button:last-child {
+        margin-bottom: 0;
+      }
+
+      paper-button.google:not([disabled]) {
+        background: var(--button-google-color, var(--paper-red-a200));
+      }
+
+      paper-button.facebook:not([disabled]) {
+        background: var(--button-facebook-color, var(--paper-indigo-a200));
+      }
+
+      paper-button.twitter:not([disabled]) {
+        background: var(--button-twitter-color, var(--paper-blue-a200));
+      }
+
+      paper-button.github:not([disabled]) {
+        background: var(--button-github-color, var(--paper-grey-900));
+      }
+
+      paper-button.anonymous:not([disabled]) {
+        background: var(--button-anonymous-color, var(--paper-grey-700));
+      }
+
+      paper-button.email:not([disabled]) {
+        background: var(--button-email-color, var(--paper-grey-800));
+      }
+
+      paper-button iron-icon {
+        margin-right: 10px;
+        --iron-icon-size: 16px;
+      }
+
+      paper-button span {
+        vertical-align: middle;
+        text-transform: none;
+      }
+
+      #email-login {
+        text-align: left;
+        margin-bottom: 4rem;
+      }
+
+      hr {
+        border: 1px solid var(--divider-color, #FAFAFA);
+        margin: 4rem 0 2rem 0;
+      }
+
+      .m-b-1 {
+        margin-bottom: 1rem;
+      }
+
+      #message-error {
+        --paper-toast-background-color: var(--error-color);
+      }
+    </style>
+
+    <template is="dom-if" if="[[google]]">
+      <paper-button class="google" on-tap="signInGoogle">
+        <iron-icon icon="sign-icons:google"></iron-icon>
+        Google
+      </paper-button>
+    </template>
+
+    <template is="dom-if" if="[[facebook]]">
+      <paper-button class="facebook" on-tap="signInFacebook">
+        <iron-icon icon="sign-icons:facebook"></iron-icon>
+        Facebook
+      </paper-button>
+    </template>
+
+    <template is="dom-if" if="[[twitter]]">
+      <paper-button class="twitter" on-tap="signInTwitter">
+        <iron-icon icon="sign-icons:twitter"></iron-icon>
+        Twitter
+      </paper-button>
+    </template>
+
+    <template is="dom-if" if="[[github]]">
+      <paper-button class="github" on-tap="signInGitHub">
+        <iron-icon icon="sign-icons:github"></iron-icon>
+        GitHub
+      </paper-button>
+    </template>
+
+    <template is="dom-if" if="[[anonymous]]">
+      <paper-button class="anonymous" on-tap="signInAnonymously">
+        <iron-icon icon="sign-icons:person-outline"></iron-icon>
+        Anonymous
+      </paper-button>
+    </template>
+
+
+    <template is="dom-if" if="[[email]]">
+      <hr>
+      <form is="iron-form" id="email-login">
+        <gold-email-input required auto-validate error-message="Please enter a valid email"
+                          label="email@example.com" class="m-b-1"></gold-email-input>
+
+        <paper-input label="password input" type="password" class="m-b-1"></paper-input>
+
+        <paper-button class="email" onclick="submitForm()">
+          <span>Sign in</span>
+        </paper-button>
+
+        <p class="paper-font-body1">
+          <a href="#">Forgot Your Password?</a>
+        </p>
+      </form>
+    </template>
+
+    <paper-toast id="message-error" class="fit-bottom" text$="{{errorMessage}}"></paper-toast>
+    <paper-toast id="message-success" class="fit-bottom" text$="{{successMessage}}"></paper-toast>
+  </template>
+
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer({
+
+        is: 'minimal-signin',
+
+        properties: {
+          /**
+           * Allow Google Sign-in.
+           */
+          google: {
+            type: Boolean,
+            notify: true,
+            value: false
+          },
+          /**
+           * Allow Facebook Sign-in.
+           */
+          facebook: {
+            type: Boolean,
+            notify: true,
+            value: false
+          },
+          /**
+           * Allow Twitter Sign-in.
+           */
+          twitter: {
+            type: Boolean,
+            notify: true,
+            value: false
+          },
+          /**
+           * Allow GitHub Sign-in.
+           */
+          github: {
+            type: Boolean,
+            notify: true,
+            value: false
+          },
+          /**
+           * Allow Email Sign-in.
+           */
+          email: {
+            type: Boolean,
+            notify: true,
+            value: false
+          },
+
+          /**
+           * Allow anonymous Sign-in.
+           */
+          anonymous: {
+            type: Boolean,
+            notify: true,
+            value: false
+          },
+
+          /**
+           * Error toast message.
+           */
+          errorMessage: {
+            type: String,
+            reflectToAttribute: true,
+            value: "error"
+          },
+
+          /**
+           * Error toast message.
+           */
+          successMessage: {
+            type: String,
+            reflectToAttribute: true,
+            value: "success"
+          },
+
+        },
+
+        /**
+         * Google Sign-in function.
+         */
+        signInGoogle: function () {
+          this._signIn('google');
+        },
+        /**
+         * Facebook Sign-in function.
+         */
+        signInFacebook: function () {
+          this._signIn('facebook');
+        },
+        /**
+         * Twitter Sign-in function.
+         */
+        signInTwitter: function () {
+          this._signIn('twitter');
+        },
+        /**
+         * GitHub Sign-in function.
+         */
+        signInGitHub: function () {
+          this._signIn('github');
+        },
+        /**
+         * Anonymous Sign-in function.
+         */
+        signInAnonymously: function () {
+          var module = this;
+          window.auth.signInAnonymously().then(function (result) {
+            module._openMessageSuccess("Welcome");
+          }).catch(function (error) {
+            module._openMessageError(error.message);
+          });
+        },
+
+        /**
+         * Sign In the user.
+         */
+        _signIn: function (provider) {
+          var module = this;
+
+          window.auth.signInWithPopup(provider).then(function (result) {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            var token = result.credential.accessToken;
+            // The signed-in user info.
+            var user = result.user;
+            // ...
+          }).catch(function (error) {
+            module._openMessageError(error.message);
+          });
+        },
+
+        /**
+         * Sign In with email and password.
+         */
+        signInWithEmailAndPassword: function (e) {
+          if (e) {
+            e.preventDefault();
+          }
+          this.$.auth.signInWithEmailAndPassword(this.email, this.password);
+          this.email = null;
+          this.password = null;
+        },
+
+        /**
+         * Create user with email and password
+         */
+        createUserWithEmailAndPassword: function () {
+          this.$.auth.createUserWithEmailAndPassword(this.email, this.password);
+          this.email = null;
+          this.password = null;
+        },
+        /**
+         * sign out
+         */
+        signOut: function () {
+          this.error = null;
+          this.$.auth.signOut();
+        },
+
+        /**
+         * Open success Message.
+         */
+        _openMessageSuccess: function (message) {
+          this.successMessage = message;
+          this.$$("#message-success").open();
+        },
+
+        /**
+         * Open error Message.
+         */
+        _openMessageError: function (message) {
+          this.errorMessage = message;
+          this.$$("#message-error").open();
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

@@ -233,6 +233,10 @@ App Sign in module
 
         },
 
+        listeners: {
+          'sign-out': '_signOut',
+        },
+
         /**
          * Google Sign-in function.
          */
@@ -307,11 +311,11 @@ App Sign in module
           this.password = null;
         },
         /**
-         * sign out
+         * Sign-out function.
          */
         signOut: function () {
-          this.error = null;
-          this.$.auth.signOut();
+          window.auth.signOut();
+          this._openMessageSuccess('Come back soon.');
         },
 
         /**

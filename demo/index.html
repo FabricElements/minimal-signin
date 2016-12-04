@@ -25,6 +25,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <!-- Firebase -->
   <link rel="import" href="../../polymerfire/firebase-app.html">
   <link rel="import" href="../../polymerfire/polymerfire.html">
+  <link rel="import" href="../../polymer/polymer.html">
 
 
   <style is="custom-style" include="demo-pages-shared-styles">
@@ -55,9 +56,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </firebase-auth>
 
   <div class="vertical-section-container centered">
-    <h3>Basic minimal-signin demo</h3>
+    <h3>Basic demo</h3>
     <demo-snippet>
-      <minimal-signin google facebook twitter github anonymous email></minimal-signin>
+      <minimal-signin id="minimalSignin" google facebook twitter github anonymous email></minimal-signin>
     </demo-snippet>
   </div>
 
@@ -74,40 +75,47 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </div>
 
 </template>
+<script>
+//  (function () {
+//    'use strict';
+//
+//    Polymer({
+//      is: 'demo-app',
+//      signOut: function () {
+//        console.log('hello');
+//        this.$$("minimal-signin"). fire('sign-out');
+//      }
+//    });
+//
+//  });
+</script>
 <script type="text/javascript">
+
   document.addEventListener('WebComponentsReady', function () {
     var app = document.getElementById('app');
     app.error = null;
     app.showError = function (e) {
       this.error = e.detail;
     };
-    app.signInAnonymously = function () {
-      this.error = null;
-      this.$.auth.signInAnonymously();
-    };
-    app.signInWithGoogle = function () {
-      this.error = null;
-      this.$.auth.signInWithPopup();
-    };
-    app.signInWithEmailAndPassword = function (e) {
-      if (e) {
-        e.preventDefault();
-      }
-      this.error = null;
-      this.$.auth.signInWithEmailAndPassword(this.email, this.password);
-      this.email = null;
-      this.password = null;
-    };
-    app.createUserWithEmailAndPassword = function () {
-      this.error = null;
-      this.$.auth.createUserWithEmailAndPassword(this.email, this.password);
-      this.email = null;
-      this.password = null;
+//    app.signInWithEmailAndPassword = function (e) {
+//      if (e) {
+//        e.preventDefault();
+//      }
+//      this.error = null;
+//      this.$.auth.signInWithEmailAndPassword(this.email, this.password);
+//      this.email = null;
+//      this.password = null;
+//    };
+//    app.createUserWithEmailAndPassword = function () {
+//      this.error = null;
+//      this.$.auth.createUserWithEmailAndPassword(this.email, this.password);
+//      this.email = null;
+//      this.password = null;
+//    }
+    app.signOut= function () {
+      console.log('hello');
+      this.$.minimalSignin.signOut();
     }
-    app.signOut = function () {
-      this.error = null;
-      this.$.auth.signOut();
-    };
   });
 </script>
 </body>

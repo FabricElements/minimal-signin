@@ -266,7 +266,7 @@ App Sign in module
          */
         signInAnonymously: function () {
           var module = this;
-          Polymer.dom(this.parent).querySelector("firebase-auth").signInAnonymously().then(function (result) {
+          document.querySelector("firebase-auth").signInAnonymously().then(function (result) {
             module._openMessageSuccess("Welcome");
           }).catch(function (error) {
             module._openMessageError(error.message);
@@ -279,7 +279,7 @@ App Sign in module
         _signIn: function (provider) {
           var module = this;
 
-          Polymer.dom(this.parent).querySelector("firebase-auth").signInWithPopup(provider).then(function (result) {
+          document.querySelector("firebase-auth").signInWithPopup(provider).then(function (result) {
             // This gives you a Google Access Token. You can use it to access the Google API.
             var token = result.credential.accessToken;
             // The signed-in user info.
@@ -298,7 +298,7 @@ App Sign in module
           if (e) {
             e.preventDefault();
           }
-          Polymer.dom(this.parent).querySelector("firebase-auth").signInWithEmailAndPassword(this.email, this.password);
+          document.querySelector("firebase-auth").signInWithEmailAndPassword(this.email, this.password);
           this.email = null;
           this.password = null;
         },
@@ -307,7 +307,7 @@ App Sign in module
          * Create user with email and password
          */
         createUserWithEmailAndPassword: function () {
-          Polymer.dom(this.parent).querySelector("firebase-auth").createUserWithEmailAndPassword(this.email, this.password);
+          document.querySelector("firebase-auth").createUserWithEmailAndPassword(this.email, this.password);
           this.email = null;
           this.password = null;
         },
@@ -316,7 +316,7 @@ App Sign in module
          */
         signOut: function () {
           this.error = null;
-          Polymer.dom(this.parent).querySelector("firebase-auth").signOut();
+          document.querySelector("firebase-auth").signOut();
           this._openMessageSuccess("Come back soon.");
         },
 

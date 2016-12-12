@@ -2,31 +2,31 @@
 
 <html>
 <head>
-    <title>minimal-signin test</title>
+    <title>skeleton-signin test</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
-    
-    <link rel="import" href="../minimal-signin.html">
+
+    <link rel="import" href="../skeleton-signin.html">
 </head>
 <body>
 
 <test-fixture id="basic">
     <template>
-        <minimal-signin></minimal-signin>
+        <skeleton-signin></skeleton-signin>
     </template>
 </test-fixture>
 
 <script>
-    suite('minimal-signin', function () {
-        
+    suite('skeleton-signin', function () {
+
         //noinspection ES6ModulesDependencies
         test('instantiating the element works', function () {
             var element = fixture('basic');
-            assert.equal(element.is, 'minimal-signin');
+            assert.equal(element.is, 'skeleton-signin');
         });
-        
+
     });
 </script>
 </body>

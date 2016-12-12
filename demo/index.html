@@ -20,7 +20,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
   <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-  <link rel="import" href="../minimal-signin.html">
+  <link rel="import" href="../skeleton-signin.html">
 
   <!-- Firebase -->
   <link rel="import" href="../../polymerfire/firebase-app.html">
@@ -29,7 +29,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
   <style is="custom-style" include="demo-pages-shared-styles">
-    minimal-signin paper-button {
+    skeleton-signin paper-button {
       display: block;
     }
     img {
@@ -57,12 +57,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <div class="vertical-section-container centered">
     <h3>Basic demo</h3>
     <demo-snippet>
-      <minimal-signin id="minimalSignin" google facebook twitter github anonymous email></minimal-signin>
+      <skeleton-signin id="minimalSignin" google facebook twitter github anonymous email></skeleton-signin>
     </demo-snippet>
   </div>
 
   <div class="vertical-section-container centered">
-    <h3>Basic minimal-signin demo</h3>
+    <h3>Basic skeleton-signin demo</h3>
     <demo-snippet>
       <p>Name: {{user.displayName}}</p>
       <p>Email: {{user.email}}</p>
@@ -82,7 +82,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 //      is: 'demo-app',
 //      signOut: function () {
 //        console.log('hello');
-//        this.$$("minimal-signin"). fire('sign-out');
+//        this.$$("skeleton-signin"). fire('sign-out');
 //      }
 //    });
 //

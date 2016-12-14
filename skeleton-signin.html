@@ -21,6 +21,7 @@ App Sign in module
         overflow-y: auto;
         margin: 0 1rem;
         padding: 1rem 0;
+        --login-button: {};
       }
 
       a {
@@ -33,7 +34,7 @@ App Sign in module
 
       paper-button {
         margin: 0 0 1rem 0;
-      apply(--login-button);
+        apply(--login-button);
       }
 
       paper-button:not([disabled]) {
@@ -252,7 +253,7 @@ App Sign in module
          */
         signInAnonymously: function () {
           var self = this;
-          Polymer.dom(this).querySelector("firebase-auth").signInAnonymously().then(function (result) {
+          document.querySelector("firebase-auth").signInAnonymously().then(function (result) {
             console.log("you are logged");
           }).catch(function (error) {
             self.onError = error;
@@ -264,7 +265,7 @@ App Sign in module
          */
         _signIn: function (provider) {
           var self = this;
-          Polymer.dom(this).querySelector("firebase-auth").signInWithPopup(provider).then(function (result) {
+          document.querySelector("firebase-auth").signInWithPopup(provider).then(function (result) {
             // This gives you a Google Access Token. You can use it to access the Google API.
             var token = result.credential.accessToken;
             // The signed-in user info.
@@ -283,7 +284,7 @@ App Sign in module
           if (e) {
             e.preventDefault();
           }
-          Polymer.dom(this).querySelector("firebase-auth").signInWithEmailAndPassword(this.email, this.password);
+          document.querySelector("firebase-auth").signInWithEmailAndPassword(this.email, this.password);
           this.email = null;
           this.password = null;
         },
@@ -292,7 +293,7 @@ App Sign in module
          * Create user with email and password
          */
         createUserWithEmailAndPassword: function () {
-          Polymer.dom(this).querySelector("firebase-auth").createUserWithEmailAndPassword(this.email, this.password);
+          document.querySelector("firebase-auth").createUserWithEmailAndPassword(this.email, this.password);
           this.email = null;
           this.password = null;
         },
@@ -301,7 +302,7 @@ App Sign in module
          */
         signOut: function () {
           this.onError = null;
-          Polymer.dom(this).querySelector("firebase-auth").signOut();
+          document.querySelector("firebase-auth").signOut();
         }
 
       });

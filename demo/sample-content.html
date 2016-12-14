@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         --button-google-color: blue;
         --login-button: {
-          border-radius: 300px;
+          border-radius: 50px;
           display: none !important;
         };
       }
@@ -36,14 +36,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       storage-bucket="fir-832aa.appspot.com"
     ></firebase-app>
 
+    <firebase-auth
+      signed-in="{{signedIn}}"
+      user="{{user}}"
+      on-error="handleError">
+    </firebase-auth>
 
-    <skeleton-signin google facebook twitter github anonymous email on-error="handleError" hidden$="{{signedIn}}">
-      <firebase-auth
-        signed-in="{{signedIn}}"
-        user="{{user}}"
-        on-error="handleError">
-      </firebase-auth>
-    </skeleton-signin>
+    <skeleton-signin google facebook twitter github anonymous email on-error="handleError" hidden$="{{signedIn}}"></skeleton-signin>
 
 
     <template is="dom-if" if="{{signedIn}}">

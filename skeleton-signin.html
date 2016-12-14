@@ -2,8 +2,8 @@
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../gold-email-input/gold-email-input.html">
 <link rel="import" href="../paper-input/paper-input.html">
-<link rel="import" href="../paper-toast/paper-toast.html">
 <link rel="import" href="../paper-styles/classes/typography.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
 <link rel="import" href="sign-icons.html">
 
 <!--
@@ -33,6 +33,7 @@ App Sign in module
 
       paper-button {
         margin: 0 0 1rem 0;
+      apply(--login-button);
       }
 
       paper-button:not([disabled]) {
@@ -90,10 +91,6 @@ App Sign in module
       .m-b-1 {
         margin-bottom: 1rem;
       }
-
-      #message-error {
-        --paper-toast-background-color: var(--error-color);
-      }
     </style>
 
     <template is="dom-if" if="[[google]]">
@@ -149,9 +146,6 @@ App Sign in module
         </p>
       </form>
     </template>
-
-    <paper-toast id="message-error" class="fit-bottom" text$="{{errorMessage}}"></paper-toast>
-    <paper-toast id="message-success" class="fit-bottom" text$="{{successMessage}}"></paper-toast>
   </template>
 
   <script>
@@ -214,22 +208,14 @@ App Sign in module
           },
 
           /**
-           * Error toast message.
+           * Error
            */
-          errorMessage: {
+          onError: {
             type: String,
+            notify: true,
             reflectToAttribute: true,
-            value: "error"
-          },
-
-          /**
-           * Error toast message.
-           */
-          successMessage: {
-            type: String,
-            reflectToAttribute: true,
-            value: "success"
-          },
+            value: null
+          }
 
         },
 
@@ -265,11 +251,11 @@ App Sign in module
          * Anonymous Sign-in function.
          */
         signInAnonymously: function () {
-          var module = this;
-          document.querySelector("firebase-auth").signInAnonymously().then(function (result) {
-            module._openMessageSuccess("Welcome");
+          var self = this;
+          Polymer.dom(this).querySelector("firebase-auth").signInAnonymously().then(function (result) {
+            console.log("you are logged");
           }).catch(function (error) {
-            module._openMessageError(error.message);
+            self.onError = error;
           });
         },
 
@@ -277,17 +263,16 @@ App Sign in module
          * Sign In the user.
          */
         _signIn: function (provider) {
-          var module = this;
-
-          document.querySelector("firebase-auth").signInWithPopup(provider).then(function (result) {
+          var self = this;
+          Polymer.dom(this).querySelector("firebase-auth").signInWithPopup(provider).then(function (result) {
             // This gives you a Google Access Token. You can use it to access the Google API.
             var token = result.credential.accessToken;
             // The signed-in user info.
             var user = result.user;
             // ...
-            module._openMessageSuccess("Welcome");
+            console.log("welcome");
           }).catch(function (error) {
-            module._openMessageError(error.message);
+            self.onError = error;
           });
         },
 
@@ -298,7 +283,7 @@ App Sign in module
           if (e) {
             e.preventDefault();
           }
-          document.querySelector("firebase-auth").signInWithEmailAndPassword(this.email, this.password);
+          Polymer.dom(this).querySelector("firebase-auth").signInWithEmailAndPassword(this.email, this.password);
           this.email = null;
           this.password = null;
         },
@@ -307,7 +292,7 @@ App Sign in module
          * Create user with email and password
          */
         createUserWithEmailAndPassword: function () {
-          document.querySelector("firebase-auth").createUserWithEmailAndPassword(this.email, this.password);
+          Polymer.dom(this).querySelector("firebase-auth").createUserWithEmailAndPassword(this.email, this.password);
           this.email = null;
           this.password = null;
         },
@@ -315,25 +300,8 @@ App Sign in module
          * sign out
          */
         signOut: function () {
-          this.error = null;
-          document.querySelector("firebase-auth").signOut();
-          this._openMessageSuccess("Come back soon.");
-        },
-
-        /**
-         * Open success Message.
-         */
-        _openMessageSuccess: function (message) {
-          this.successMessage = message;
-          this.$$("#message-success").open();
-        },
-
-        /**
-         * Open error Message.
-         */
-        _openMessageError: function (message) {
-          this.errorMessage = message;
-          this.$$("#message-error").open();
+          this.onError = null;
+          Polymer.dom(this).querySelector("firebase-auth").signOut();
         }
 
       });
